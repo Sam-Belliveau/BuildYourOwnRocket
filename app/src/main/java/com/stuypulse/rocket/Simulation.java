@@ -8,7 +8,9 @@ import com.stuypulse.rocket.rockets.*;
 public final class Simulation {
 
     private Rocket[] rockets = {
-        new Pulsar94()
+        new Pulsar94(),
+        //new Pulsar95(),
+        new Pulsar96(25, true)
     };
 
     private Graphics graphics = new Graphics(rockets);

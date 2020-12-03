@@ -9,6 +9,7 @@ import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 // Constants for characteristics of the rocket
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.Angle;
+import com.stuypulse.stuylib.math.SLMath;
 
 import com.stuypulse.rocket.physics.Constants;
 import com.stuypulse.rocket.physics.RocketPhysics;
@@ -55,10 +56,10 @@ public abstract class Rocket {
      * @param thrust the intensity of the thrust [0.0 - 1.0]
      */
     protected final void setThrust(double thrust) {
-        if(0.0 <= thrust && thrust <= 1.0) {
+        if(0 <= thrust && thrust <= 1) {
             this.thrust = thrust;
         } else {
-            throw new RocketException("Rocket attempted to set thruster to dangerous value!");
+            throw new RocketException("Invalid Thrust Value (" + thrust + ")");
         }
     }
 
@@ -76,10 +77,10 @@ public abstract class Rocket {
      * @param angle the amount that the thruster should turn. [-1.0 - 1.0]
      */
     protected final void setThrustAngle(double angle) {
-        if(-1.0 <= angle && angle <= 1.0) {
+        if(-1 <= angle && angle <= 1) {
             this.thrustAngle = angle;
         } else {
-            throw new RocketException("Rocket attempted to set thruster to dangerous value!");
+            throw new RocketException("Invalid Angle Value (" + angle + ")");
         }
     }
 
@@ -94,7 +95,7 @@ public abstract class Rocket {
     /**
      * Stops the rocket entirely AND cuts control.
      */
-    protected final void force_stop() {
+    protected final void forceStop() {
         stop();
         status = RocketStatus.STOPPED;
     }
@@ -146,6 +147,7 @@ public abstract class Rocket {
 
     // Current status of Rocket
     private RocketStatus status;
+    private String explodedReason;
 
     // Target Thrust / Angle for Rocket
     private double thrust;
@@ -163,6 +165,7 @@ public abstract class Rocket {
     public Rocket() {
         // Initial state of rocket
         status = RocketStatus.INITIALIZED;
+        explodedReason = "None";
 
         // Set trust and angle
         thrust = 0;
@@ -203,6 +206,7 @@ public abstract class Rocket {
             throw new RocketException("Attempted to start rocket while \"" + status + "\"!");
         } else {
             status = RocketStatus.RUNNING;
+            explodedReason = "None";
         }
 
     }
@@ -216,7 +220,7 @@ public abstract class Rocket {
             try {
                 this.execute();
             } catch (RocketException e) {
-                this.explode();
+                this.explode(e.getMessage());
             }
         } else {
             stop();
@@ -229,7 +233,19 @@ public abstract class Rocket {
      * Stop the rocket, explode, ends the rockets simulation
      */
     public final void explode() {
-        status = RocketStatus.EXPLODED;
+        explode("No Reason Given");
+    }
+
+    /**
+     * Stop the rocket, explode, ends the rockets simulation
+     * 
+     * @param msg reason the rocket exploded
+     */
+    public final void explode(String msg) {
+        if(status != RocketStatus.EXPLODED) {
+            status = RocketStatus.EXPLODED;
+            explodedReason = msg;
+        }
     }
 
     /**
@@ -245,6 +261,12 @@ public abstract class Rocket {
      * a single string. Good to represent the rocket.
      */
     public final String toString() {
+        if(status == RocketStatus.EXPLODED) {
+            return this.getAuthor() + "'s " 
+                + this.getClass().getSimpleName() 
+                + " [" + this.getStatus() + ": " + explodedReason + "]";
+        } 
+
         return this.getAuthor() + "'s " 
              + this.getClass().getSimpleName() 
              + " [" + this.getStatus() + "]";

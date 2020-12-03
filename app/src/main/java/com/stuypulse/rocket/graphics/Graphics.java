@@ -1,6 +1,8 @@
 package com.stuypulse.rocket.graphics;
 
 import com.stuypulse.stuylib.math.Vector2D;
+
+
 import com.stuypulse.stuylib.math.Angle;
 
 import java.awt.Color;
@@ -13,28 +15,68 @@ public class Graphics {
 
     private Rocket[] rockets;
     
+    private double[] x_cloud = new double[128];
+    private double[] y_cloud = new double[x_cloud.length];
+    private double[] r_cloud = new double[x_cloud.length];
+
     public Graphics(Rocket[] r) {
         rockets = r;
-        
-        StdDraw.setXscale(-25, 25);
-        StdDraw.setYscale(-5, 45);
     
+        for(int i = 0; i < x_cloud.length; ++i) {
+            x_cloud[i] = 200 * (Math.random() - 0.5);
+            y_cloud[i] = 10 + 200 * Math.random();
+            r_cloud[i] = (Math.random() + 0.2) * 3;
+        }
     }
 
     public void line(Vector2D a, Vector2D b) {
         StdDraw.line(a.x,a.y,b.x,b.y);
     }
 
+    private final double BUFFER = 25;
     public void display() {
-        StdDraw.enableDoubleBuffering();
-        StdDraw.clear();
 
-        StdDraw.setPenRadius(0.01);
-        StdDraw.setPenColor(Color.BLACK);
-        line(new Vector2D(-50, 0), new Vector2D(50, 0));
+        double minx = -1, miny = -1, maxx = 1, maxy = 1;
 
         for(Rocket rocket : rockets) {
             Vector2D pos = rocket.getState().getPosition();
+            
+            minx = Math.min(minx, pos.x);
+            maxx = Math.max(maxx, pos.x);
+            
+            miny = Math.min(miny, pos.y);
+            maxy = Math.max(maxy, pos.y);
+        }
+
+        if(maxx - minx > miny - maxy) { 
+            miny = (miny + maxy) / 2 - (maxx - minx) / 2;
+            maxy = (miny + maxy) / 2 + (maxx - minx) / 2;
+        } else {
+            minx = (minx + maxx) / 2 - (maxy - miny) / 2;
+            maxx = (minx + maxx) / 2 + (maxy - miny) / 2;
+        }
+
+        StdDraw.setXscale(minx - BUFFER, maxx + BUFFER);
+        StdDraw.setYscale(miny - BUFFER, maxy + BUFFER);
+
+        StdDraw.enableDoubleBuffering();
+        StdDraw.clear();
+
+        StdDraw.setPenColor(Color.CYAN);
+        StdDraw.filledRectangle(0, 200, 1000, 200);
+
+        StdDraw.setPenColor(Color.GREEN);
+        StdDraw.filledRectangle(0, -50, 1000, 50);
+
+        StdDraw.setPenColor(Color.white);
+        for(int i = 0; i < x_cloud.length; ++i) {
+            StdDraw.filledCircle(x_cloud[i], y_cloud[i], r_cloud[i]);
+        }
+
+        for(Rocket rocket : rockets) {
+            Vector2D pos = rocket.getState().getPosition();
+            
+            StdDraw.setPenColor(Color.BLACK);
             StdDraw.text(pos.x, pos.y + Constants.Rocket.HEIGHT, rocket.toString());
 
             if(rocket.getStatus() == RocketStatus.EXPLODED) {
@@ -44,7 +86,7 @@ public class Graphics {
                 StdDraw.setPenRadius(0.066);
                 StdDraw.setPenColor(Color.YELLOW);
                 line(pos, pos);
-                StdDraw.setPenRadius(0.025);
+                StdDraw.setPenRadius(0.02);
                 StdDraw.setPenColor(Color.WHITE);
                 line(pos, pos);
 
@@ -60,7 +102,7 @@ public class Graphics {
                 StdDraw.setPenColor(Color.BLACK);
                 line(head, tail);
     
-                StdDraw.setPenRadius(0.02);
+                StdDraw.setPenRadius(0.03);
                 StdDraw.setPenColor(Color.BLUE);
                 line(pos, pos);
     

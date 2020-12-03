@@ -64,7 +64,7 @@ public final class RocketPhysics {
                 angle = Angle.fromDegrees(0);
             } else {
                 angularVelocity = (-angularVelocity) * Constants.RESTITUTION;
-                rocket.explode();
+                rocket.explode("Crash Landing");
             }
             velocity = new Vector2D(Constants.RESTITUTION * velocity.x, Constants.RESTITUTION * Math.abs(velocity.y));
         }

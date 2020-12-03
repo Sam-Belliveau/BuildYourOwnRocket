@@ -13,9 +13,9 @@ import com.stuypulse.rocket.rockets.outline.Rocket;
  * 
  * @author Sam Belliveau (sam.belliveau@gmail.com)
  */
-public class Pulsar94 extends Rocket {
+public class Pulsar95 extends Rocket {
 
-    public Pulsar94() {
+    public Pulsar95() {
         // This really is the whole class
     }
 
@@ -24,19 +24,17 @@ public class Pulsar94 extends Rocket {
     }
 
     protected void execute() {
-        double height = getState().getPosition().y + getState().getVelocity().y;
-        double x = getState().getPosition().x;
-        double ang = getState().getAngle().toDegrees();
-        double t = x < 10 ? 15 : -15;
+        setThrust(0.5);
 
-        if(height < 20) {
-            setThrust(1);
+        if(getState().getPosition().y < 10) {
+            setThrustAngle(0);
         } else {
-            setThrust(0.5);
+            if(getState().getAngle().toDegrees() > 0) {
+                setThrustAngle(0.2);
+            } else {
+                setThrustAngle(-0.2);
+            }
         }
-
-        setThrustAngle((ang - t) / 180);
-
     }
 
 }
