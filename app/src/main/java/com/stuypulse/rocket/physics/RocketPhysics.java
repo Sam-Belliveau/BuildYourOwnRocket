@@ -35,10 +35,10 @@ public final class RocketPhysics {
         ///// PHYSICS /////
 
         // Calculating Torque
-        double torque = thrustForce * thrustAngle.sin() * Constants.Rocket.HEIGHT / 2;
+        double torque = thrustForce * -thrustAngle.sin() * Constants.Rocket.HEIGHT / 2;
     
         // Calculating Thrust onto rocket
-        Angle totalThrustAngle = state.getAngle().sub(thrustAngle).add(Angle.k90deg);
+        Angle totalThrustAngle = state.getAngle().add(thrustAngle).add(Angle.k90deg);
         Vector2D thrustVector = totalThrustAngle.getVector().mul(thrustForce * thrustAngle.cos());
 
         // Calculating final forces
@@ -54,15 +54,16 @@ public final class RocketPhysics {
         Angle angle = state.getAngle().add(Angle.fromDegrees(angularVelocity * dt));
 
         // Checking for the floor
-        if(position.y <= 0) {
+        double min_height = Constants.Rocket.HEIGHT * Math.abs(angle.cos()) / 2.0;
+        if(position.y <= min_height) {
             // Set new position to y = 0
-            position = new Vector2D(position.x, 0);
+            position = new Vector2D(position.x, min_height);
 
             // Check if rocket landed safely
-            if( (Math.abs(angle.toDegrees()) < Constants.MAX_LANDING_ANGLE) &&
-                (velocity.magnitude() < Constants.MAX_LANDING_VELOCITY)) {
+            if( (Math.abs(angle.toDegrees()) < Constants.MAX_LANDING_ANGLE)) {
                 angle = Angle.fromDegrees(0);
             } else {
+                angularVelocity = (-angularVelocity) * Constants.RESTITUTION;
                 rocket.explode();
             }
             velocity = new Vector2D(Constants.RESTITUTION * velocity.x, Constants.RESTITUTION * Math.abs(velocity.y));

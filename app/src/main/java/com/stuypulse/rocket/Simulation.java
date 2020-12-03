@@ -1,6 +1,7 @@
 package com.stuypulse.rocket;
 
 import com.stuypulse.rocket.rockets.outline.*;
+import com.stuypulse.rocket.graphics.Graphics;
 import com.stuypulse.rocket.rockets.*;
 
 
@@ -9,6 +10,8 @@ public final class Simulation {
     private Rocket[] rockets = {
         new Pulsar94()
     };
+
+    private Graphics graphics = new Graphics(rockets);
 
     public Simulation() {
     }
@@ -20,6 +23,7 @@ public final class Simulation {
     }
 
     public void periodic() {
+        graphics.display();
         for(Rocket rocket : rockets) {
             rocket.periodic();
         }

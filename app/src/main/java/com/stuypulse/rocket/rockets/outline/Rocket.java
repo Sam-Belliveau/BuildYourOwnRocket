@@ -247,7 +247,7 @@ public abstract class Rocket {
     public final String toString() {
         return this.getAuthor() + "'s " 
              + this.getClass().getSimpleName() 
-             + " [" + this.getStatus() + ": " + this.getState() + "]";
+             + " [" + this.getStatus() + "]";
     }
 
 
