@@ -28,7 +28,6 @@ public class Pulsar94 extends Rocket {
 
         double height = getState().getPosition().y;
         setThrustAngle(0.1);
-        System.out.println(getThrustAngle());
     }
 
 }
