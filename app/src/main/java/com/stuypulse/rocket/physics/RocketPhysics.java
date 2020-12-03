@@ -38,7 +38,7 @@ public final class RocketPhysics {
         double torque = thrustForce * thrustAngle.sin() * Constants.Rocket.HEIGHT / 2;
     
         // Calculating Thrust onto rocket
-        Angle totalThrustAngle = state.getAngle().add(thrustAngle).add(Angle.k90deg);
+        Angle totalThrustAngle = state.getAngle().sub(thrustAngle).add(Angle.k90deg);
         Vector2D thrustVector = totalThrustAngle.getVector().mul(thrustForce * thrustAngle.cos());
 
         // Calculating final forces
@@ -62,10 +62,10 @@ public final class RocketPhysics {
             if( (Math.abs(angle.toDegrees()) < Constants.MAX_LANDING_ANGLE) &&
                 (velocity.magnitude() < Constants.MAX_LANDING_VELOCITY)) {
                 angle = Angle.fromDegrees(0);
-                velocity = new Vector2D(Constants.RESTITUTION * velocity.x, Constants.RESTITUTION * Math.abs(velocity.y));
             } else {
                 rocket.explode();
             }
+            velocity = new Vector2D(Constants.RESTITUTION * velocity.x, Constants.RESTITUTION * Math.abs(velocity.y));
         }
 
         return new RocketState(position, velocity, angle, angularVelocity);
