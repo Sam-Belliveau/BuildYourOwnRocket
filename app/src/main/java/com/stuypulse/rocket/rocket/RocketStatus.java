@@ -1,4 +1,4 @@
-package com.stuypulse.rocket.rockets.outline;
+package com.stuypulse.rocket.rocket;
 
 public enum RocketStatus {
     INITIALIZED,

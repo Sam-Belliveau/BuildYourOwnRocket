@@ -1,16 +1,20 @@
 package com.stuypulse.rocket;
 
-import com.stuypulse.rocket.rockets.outline.*;
 import com.stuypulse.rocket.graphics.Graphics;
-import com.stuypulse.rocket.rockets.*;
+import com.stuypulse.rocket.rocket.*;
+import com.stuypulse.rocket.rocket.rockets.*;
 
 
 public final class Simulation {
 
     private Rocket[] rockets = {
+        new ExampleRocket(),
+        new CoolestRocket(),
+        new Pensil15(),
+        new ProjectBigEnergy(),
         new Pulsar94(),
-        //new Pulsar95(),
-        new Pulsar96(25, true)
+        new Yasuo(),
+        new SteadyBoi()
     };
 
     private Graphics graphics = new Graphics(rockets);

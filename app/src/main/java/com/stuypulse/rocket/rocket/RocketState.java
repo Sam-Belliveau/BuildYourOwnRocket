@@ -1,4 +1,4 @@
-package com.stuypulse.rocket.rockets.outline;
+package com.stuypulse.rocket.rocket;
 
 import com.stuypulse.stuylib.math.Vector2D;
 

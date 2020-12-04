@@ -1,4 +1,4 @@
-package com.stuypulse.rocket.rockets.outline;
+package com.stuypulse.rocket.rocket;
 
 // Used for simulating real world input
 import com.stuypulse.stuylib.streams.IStream;
@@ -13,6 +13,8 @@ import com.stuypulse.stuylib.math.SLMath;
 
 import com.stuypulse.rocket.physics.Constants;
 import com.stuypulse.rocket.physics.RocketPhysics;
+
+import java.awt.Color;
 
 /**
  * This is an abstract class for a Rocket. By implementing the
@@ -41,6 +43,14 @@ public abstract class Rocket {
      */
     protected abstract void execute(); 
 
+    /**
+     * return the color that you would like the rocket to appear as
+     * @return the color that the rocket should be
+     */
+    public Color getColor() {
+        return Color.BLACK;
+    }
+
     /**********************************/
     /*** Important functions to use ***/
     /**********************************/
@@ -53,7 +63,7 @@ public abstract class Rocket {
      * Note that the rocket will not immediately be set to
      * this thrust value, there will be some real world delay
      * 
-     * @param thrust the intensity of the thrust [0.0 - 1.0]
+     * @param thrust the intensity of the thrust [0.0, 1.0]
      */
     protected final void setThrust(double thrust) {
         if(0 <= thrust && thrust <= 1) {
@@ -74,7 +84,7 @@ public abstract class Rocket {
      * Angle value of -1 will turn the thruster to about -45 deg.
      * Angle value of 1 will turn the thruster to about 45 deg.
      * 
-     * @param angle the amount that the thruster should turn. [-1.0 - 1.0]
+     * @param angle the amount that the thruster should turn. [-1.0, 1.0]
      */
     protected final void setThrustAngle(double angle) {
         if(-1 <= angle && angle <= 1) {
@@ -145,6 +155,8 @@ public abstract class Rocket {
     /*** Rest of the class ***/
     /*************************/
 
+    private static double globalStartXPos = 0;
+
     // Current status of Rocket
     private RocketStatus status;
     private String explodedReason;
@@ -195,7 +207,14 @@ public abstract class Rocket {
 
         // Create Physics object and State object
         simulator = new RocketPhysics(this);
-        state = new RocketState();
+        state = new RocketState(
+            new Vector2D(globalStartXPos, 0),
+            new Vector2D(0, 0),
+            Angle.kZero,
+            0.0
+        );
+
+        globalStartXPos += 10.0;
     }
 
     /**
@@ -219,7 +238,7 @@ public abstract class Rocket {
         if(status == RocketStatus.RUNNING) {
             try {
                 this.execute();
-            } catch (RocketException e) {
+            } catch (Exception e) {
                 this.explode(e.getMessage());
             }
         } else {
@@ -264,12 +283,11 @@ public abstract class Rocket {
         if(status == RocketStatus.EXPLODED) {
             return this.getAuthor() + "'s " 
                 + this.getClass().getSimpleName() 
-                + " [" + this.getStatus() + ": " + explodedReason + "]";
+                + " [" + explodedReason + "]";
         } 
 
         return this.getAuthor() + "'s " 
-             + this.getClass().getSimpleName() 
-             + " [" + this.getStatus() + "]";
+             + this.getClass().getSimpleName();
     }
 
 

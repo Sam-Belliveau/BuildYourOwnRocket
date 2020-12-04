@@ -10,7 +10,7 @@ public class Main {
         sim.start();
 
         while(true) {
-            Thread.sleep(20);
+            Thread.sleep(10);
             sim.periodic();
             sim.printRockets();
             System.out.println();
