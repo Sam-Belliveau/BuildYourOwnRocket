@@ -12,8 +12,8 @@ public interface Constants {
 
     public double RESTITUTION = 0.25;
 
-    public double DRAG = 0.16;
-    public double ANGLE_DRAG = 0.08;
+    public double DRAG = 0.2;
+    public double ANGLE_DRAG = DRAG * 0.5;
 
     public interface Rocket {
         public double DISTANCE = 20;

@@ -38,7 +38,7 @@ public final class RocketPhysics {
         // Calculating Torque
         double torque = thrustForce * -thrustAngle.sin() * Constants.Rocket.HEIGHT;
         double angmom = state.getAngularVelocity();
-        torque -= angmom * Math.abs(angmom) * Constants.ANGLE_DRAG * Constants.Rocket.HEIGHT;
+        torque -= Math.max(torque, angmom * Math.abs(angmom) * Constants.ANGLE_DRAG * Constants.Rocket.HEIGHT);
 
         // Calculating Thrust onto rocket
         Angle totalThrustAngle = state.getAngle().add(thrustAngle).add(Angle.k90deg);
@@ -46,10 +46,10 @@ public final class RocketPhysics {
 
         // Calculating Drag
         Vector2D dragForce = rocket.getState().getVelocity();
-        dragForce = dragForce.rotate(Angle.k90deg);
-        dragForce = new Vector2D(SLMath.square(dragForce.x), SLMath.square(dragForce.y));
-        dragForce = dragForce.mul(new Vector2D(Constants.Rocket.HEIGHT, Constants.Rocket.WEIGHT));
         dragForce = dragForce.rotate(Angle.kZero.sub(Angle.k90deg));
+        dragForce = new Vector2D(SLMath.square(dragForce.x), SLMath.square(dragForce.y));
+        dragForce = dragForce.mul(new Vector2D(Constants.Rocket.HEIGHT, Constants.Rocket.WIDTH));
+        dragForce = dragForce.rotate(Angle.k90deg);
         dragForce = dragForce.mul(Constants.DRAG);
 
         // Calculating final forces
