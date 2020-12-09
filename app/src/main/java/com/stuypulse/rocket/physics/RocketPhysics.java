@@ -38,7 +38,7 @@ public final class RocketPhysics {
         // Calculating Torque
         double torque = thrustForce * -thrustAngle.sin() * Constants.Rocket.HEIGHT;
         double angmom = state.getAngularVelocity();
-        torque -= Math.max(torque, angmom * Math.abs(angmom) * Constants.ANGLE_DRAG * Constants.Rocket.HEIGHT);
+        torque -= Math.min(torque, angmom * Math.abs(angmom) * Constants.ANGLE_DRAG * Constants.Rocket.HEIGHT);
 
         // Calculating Thrust onto rocket
         Angle totalThrustAngle = state.getAngle().add(thrustAngle).add(Angle.k90deg);
