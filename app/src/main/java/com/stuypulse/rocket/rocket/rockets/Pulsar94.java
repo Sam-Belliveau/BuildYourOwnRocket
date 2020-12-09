@@ -17,9 +17,33 @@ public class Pulsar94 extends Rocket {
         double x = getState().getPosition().x;
         double y = getState().getPosition().y;
         double vy = getState().getVelocity().y;
+        double a = getState().getAngle().toDegrees();
         
-         
-        if (y >= 100){
+
+        
+        if (y >= 20 && y < 100){
+            setThrust(0);//yes
+            setThrustAngle(0);//yes
+            if (a <= -45) {
+                setThrust(1);//yes
+                setThrustAngle(-0.1);//yes
+            } 
+            else {
+                setThrust(1);//yes
+                setThrustAngle(0.1);//yes
+            }
+        }
+        else if (y >= 100){
+            setThrust(1);//yes
+            setThrustAngle(0);
+        }
+        else {
+            setThrust(1);//yes
+            setThrustAngle(0);
+        }
+    }
+
+        /*if (y >= 100){
             setThrust(0);//yes
             setThrustAngle(0);//yes
         }
@@ -37,6 +61,7 @@ public class Pulsar94 extends Rocket {
         }//;-;
         
     }
+    */
 
     public Color getColor() {
         return Color.BLACK;

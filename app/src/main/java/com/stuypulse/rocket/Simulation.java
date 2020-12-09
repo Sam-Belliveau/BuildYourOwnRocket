@@ -12,9 +12,10 @@ public final class Simulation {
         new CoolestRocket(),
         new Pensil15(),
         new ProjectBigEnergy(),
-        new Pulsar94(),
         new Yasuo(),
-        new SteadyBoi()
+        new AmazingRocket(),
+        new Pulsar94(),
+        new SteadyBoi(),
     };
 
     private Graphics graphics = new Graphics(rockets);

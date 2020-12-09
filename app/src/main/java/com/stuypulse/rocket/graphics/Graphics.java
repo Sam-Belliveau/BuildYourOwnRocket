@@ -20,7 +20,7 @@ public class Graphics {
     private double[] r_cloud = new double[x_cloud.length];
 
     private IFilter makeFilter() {
-        IFilter[] filter = new IFilter[16];
+        IFilter[] filter = new IFilter[4];
         for(int i = 0; i < filter.length; ++i) {
             filter[i] = new LowPassFilter(0.01);
         }
@@ -35,7 +35,7 @@ public class Graphics {
 
     public Graphics(Rocket[] r) {
         rockets = r;
-        StdDraw.setCanvasSize(1024,1024);
+        StdDraw.setCanvasSize(720,720);
     
         for(int i = 0; i < x_cloud.length; ++i) {
             x_cloud[i] = 1000 * (Math.random() - 0.5);
@@ -51,7 +51,7 @@ public class Graphics {
     private final double BUFFER = 20;
     public void display() {
 
-        double minx = -1, miny = -1, maxx = 1, maxy = 1;
+        double minx = 1000000, miny = -BUFFER, maxx = -1000000, maxy = +BUFFER;
 
         for(Rocket rocket : rockets) {
             Vector2D pos = rocket.getState().getPosition();
@@ -66,11 +66,9 @@ public class Graphics {
         }
 
         if(maxx - minx > maxy - miny) { 
-            miny = (miny + maxy) / 2 - (maxx - minx) / 2;
-            maxy = (miny + maxy) / 2 + (maxx - minx) / 2;
+            maxy = miny + maxx - minx;
         } else {
-            minx = (minx + maxx) / 2 - (maxy - miny) / 2;
-            maxx = (minx + maxx) / 2 + (maxy - miny) / 2;
+            maxx = minx + maxy - miny;
         }
 
         StdDraw.setXscale(minxf.get(minx - BUFFER), maxxf.get(maxx + BUFFER));

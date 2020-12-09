@@ -16,7 +16,7 @@ import com.stuypulse.stuylib.math.Angle;
  */
 public class SteadyBoi extends Rocket {
     public static final double TARGET_HEIGHT = 100;
-    public static final Angle TARGET_ANG = Angle.fromDegrees(-5);
+    public static final Angle TARGET_ANG = Angle.fromDegrees(0);
 
     public SteadyBoi(){}public String getAuthor(){return "Sam";}double _P501=0.32452543,_P502=7.165224,
     _P503=1.16612,_P504=3.257124,_P505=7.165224,_P506=6.2658654,_P507=8.3763268,_P508=35.5235356,_P509=

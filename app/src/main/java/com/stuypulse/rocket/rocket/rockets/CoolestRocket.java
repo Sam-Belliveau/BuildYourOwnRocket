@@ -23,7 +23,7 @@ public class CoolestRocket extends Rocket {
 
         if(y>=100){
             setThrust(0);
-            setThrustAngle(1);
+            setThrustAngle(0);
         }
     }
 
